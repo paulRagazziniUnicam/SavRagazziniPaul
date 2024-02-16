@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace ProgettoEnterprise
 {
+    //comandi utente
    public class Commands
     {
        
         //comando che esegue download e ricerca pattern sul file scaricato: params= nome file, pattern 
         public static void downloadAndSearch(string filename, string pattern) {
+
             FileDownloader downloader = new FileDownloader();
             downloader.downloadFile(filename);
 
@@ -36,7 +38,7 @@ namespace ProgettoEnterprise
             return 0;
         }
 
-        //stopla l'esecuzione
+        //stoppa l'esecuzione
         public static int stopExecution() {
             return 1;
         }

@@ -7,6 +7,7 @@ using System.Data.SQLite;
 
 namespace ProgettoEnterprise
 {
+    //classe adattatore per interazione con DB SQlite
     class DBmanager
     {
         //path relativa per la connessione al DB, combina la path del db che si trova nella stessa directory dell'exe col nome del DB
@@ -15,7 +16,7 @@ namespace ProgettoEnterprise
 
 
 
-        //metodo per l'insert di un documento
+        //metodo per l'insert nella table "Documenti"
         public void insertDocumento(int id, string nome, string tipo)
         {
             SQLiteConnection connection = new SQLiteConnection("Data Source=" + connectionString + ";Version=3;");
@@ -36,7 +37,7 @@ namespace ProgettoEnterprise
 
 
 
-        //metodo per l'insert di un risultato di ricerca 
+        //metodo per l'insert nella table "Risultati"
         public void insertRisultato(int id_documento, string risultato) {
             SQLiteConnection connection = new SQLiteConnection("Data Source=" + connectionString + ";Version=3;");
             connection.Open();
@@ -54,18 +55,19 @@ namespace ProgettoEnterprise
 
 
 
-        //metodo per quary generica 
+        //metodo per quary generica passando la table desiderata come parametro
         public void searchQuary(string table)
         {
             SQLiteConnection connection = new SQLiteConnection("Data Source=" + connectionString + ";Version=3;");
             connection.Open();
 
             SQLiteDataReader sqlite_datareader;
-            SQLiteCommand sqlite_cmd;
-            sqlite_cmd = connection.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT * FROM " + table;
+            SQLiteCommand sqlite_read;
 
-            sqlite_datareader = sqlite_cmd.ExecuteReader();
+            sqlite_read = connection.CreateCommand();
+            sqlite_read.CommandText = "SELECT * FROM " + table;
+
+            sqlite_datareader = sqlite_read.ExecuteReader();
             while (sqlite_datareader.Read())
             {
                 string myreader = sqlite_datareader.GetString(0);

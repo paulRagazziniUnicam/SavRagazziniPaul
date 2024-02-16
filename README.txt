@@ -26,3 +26,4 @@ I file che verranno analizzati saranno scaricati sul desktop
 
 Tali file sono dei txt dummy, reperibili all'indirizzo https://filesamples.com/formats/txt
 
+Nel SaveLog ci sono già dei dati di test disponibili per la lettura

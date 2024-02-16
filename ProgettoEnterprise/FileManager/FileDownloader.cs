@@ -11,17 +11,15 @@ using static System.Net.WebRequestMethods;
 
 namespace Enterprise
 {
+    //classe che scarica file da un URL specificato
     class FileDownloader
     {
-
-        
-
 
         public FileDownloader()
         {
 
         }
-
+        //scarica un file da https://filesamples.com/samples/document/txt/ specificando una delle tre possibilità
         public void downloadFile(String name)
         {
 
@@ -31,6 +29,7 @@ namespace Enterprise
 
             string url = "https://filesamples.com/samples/document/txt/";
 
+            //istanzia una WebClient che gestice lo stack TCP in automatico 
 #pragma warning disable
             using (WebClient client = new WebClient())
 #pragma warning restore
@@ -44,7 +43,7 @@ namespace Enterprise
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error downloading file: {ex.Message}");
+                    Console.WriteLine($"Errore di download: {ex.Message}");
                 }
             }
         }

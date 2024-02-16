@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Enterprise
 {
+    //classe che applica l'algoritmo KMP su una stringa
     class FileSearcher
     {
 

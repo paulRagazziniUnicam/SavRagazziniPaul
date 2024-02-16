@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProgettoEnterprise
 {
-    //classe Logger singleton
+    //classe per logging singleton
     public sealed class Logger
     {
         //path relative al file txt di logging nella BaseDirectory
@@ -34,7 +34,7 @@ namespace ProgettoEnterprise
 
 
 
-
+        //metodo per scrivere un log passando il testo voluto
         public void write(string text)
         {
             try

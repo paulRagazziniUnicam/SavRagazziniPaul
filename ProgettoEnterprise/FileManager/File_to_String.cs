@@ -7,11 +7,13 @@ using System.IO;
 
 namespace Enterprise
 {
+    //classe che converte un file in una stringa per permettere a KMP di analizzarla 
     class File_to_String
     {
+        //metodo che prende il nome del file da convertire e lo converte in stringa
         public static String convert(String name)
 
-        {
+        {   //path del file scaricato sul desktop 
             String path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), ((name + ".txt")));
 #pragma warning disable
             String result = null;
@@ -19,11 +21,11 @@ namespace Enterprise
 
             try
             {
-                // Open the file for reading
+                // apre il file alla destinazione specificata
                 using (StreamReader reader = new StreamReader(path))
                 {
-                    // Read and display the lines from the file until the end of the file is reached
-
+                    
+                    //finchè non arriva alla fine del file aggiunge alla stringa buffer il contenuto 
                     while (
                         (reader.ReadLine()) != null)
                     {
@@ -33,7 +35,7 @@ namespace Enterprise
             }
             catch (IOException e)
             {
-                Console.WriteLine("An error occurred while reading the file: " + e.Message);
+                Console.WriteLine("Errore di lettura file: " + e.Message);
             }
 
 
