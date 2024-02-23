@@ -16,6 +16,7 @@ namespace ProgettoEnterprise
 
         private readonly Searcher searcherService;
 
+        //costruttore
         public Commands(DbReadWrite persistency, Downloader downloader, Searcher searcher)
         {
             this.persistencyService = persistency;
@@ -45,6 +46,7 @@ namespace ProgettoEnterprise
                     persistencyService.readAllResoults(); } }
         }
 
+        //elimina tutto dal database
         public void deleatAll() {
             persistencyService.deleteAll();
         }

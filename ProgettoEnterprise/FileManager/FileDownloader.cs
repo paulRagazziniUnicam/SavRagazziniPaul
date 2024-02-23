@@ -13,6 +13,7 @@ namespace ProgettoEnterprise
 
         private readonly DbReadWrite read_write_service;
 
+        //costruttore
         public FileDownloader(DbReadWrite service)
         {
             read_write_service = service;
@@ -39,8 +40,7 @@ namespace ProgettoEnterprise
                     client.DownloadFile(url + (name + ".txt"), downloadPath);
                     Console.WriteLine("Download avvenuto con successo.");
 
-                    DBmanager manager = new DBmanager();
-                    manager.addDocument(name);
+                    this.read_write_service.addDocument(name);
 
                 }
                 catch (Exception ex)

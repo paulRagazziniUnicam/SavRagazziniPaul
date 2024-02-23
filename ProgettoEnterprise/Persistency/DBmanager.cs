@@ -39,7 +39,7 @@ namespace ProgettoEnterprise
             {
                 Console.Write($"Nome File: {entity.NomeFile}" + ", ");
                 Console.Write($"Stringa Cercata: {entity.StringaCercata}" + ", ");
-                Console.WriteLine($"Posizione: {entity.NumeroMatch}");
+                Console.WriteLine($"Numero di Match: {entity.NumeroMatch}");
             }
         }
 

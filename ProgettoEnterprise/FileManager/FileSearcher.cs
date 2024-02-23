@@ -16,14 +16,6 @@ namespace ProgettoEnterprise
         {   this.persistencyService = persistency;
         }
 
-        private DbReadWrite createService()
-        {
-            var serviceProvider = new ServiceCollection()
-               .AddTransient<DbReadWrite, DBmanager>()
-               .BuildServiceProvider();
-
-            return serviceProvider.GetService<DbReadWrite>();
-        }
 
         //metodo che esegue il calcolo della funzione prefisso che sarà usata nel KMP 
         private int[] ComputePrefixFunction(string pattern)
@@ -57,14 +49,6 @@ namespace ProgettoEnterprise
         //metodo che esegue il pattern matching a seguito del calcolo della funzione prefisso
         private void KMPSearch(string text, string pattern)
         {
-            var serviceProvider = new ServiceCollection()
-              .AddTransient<DbReadWrite, DBmanager>()
-              .BuildServiceProvider();
-
-            var service = serviceProvider.GetService<DbReadWrite>();
-
-
-
             int n = text.Length;
             int m = pattern.Length;
             int[] prefixFunction = ComputePrefixFunction(pattern);
@@ -86,22 +70,19 @@ namespace ProgettoEnterprise
                 if (q == m)
                 {
                     Console.WriteLine("Pattern trovato alla posizione: " + (i - m + 1));
+
                     numeroMatch++;
-
-                   
-                    
-                    
-
                     
                     q = prefixFunction[q - 1];
                 }
 
             }
-            service.addResoult(pattern, numeroMatch);
+            this.persistencyService.addResoult(pattern, numeroMatch);
 
         }
 
 
+        //metodo che innesca preconfigurazione e ricerca
         public void search(String text, String pattern)
         {
            

@@ -14,7 +14,7 @@ var serviceProvider = new ServiceCollection()
             
 
             var service = serviceProvider.GetService<ICommands>();
-            service.readData(1);
+            service.readData(2);
 
 
 /*
