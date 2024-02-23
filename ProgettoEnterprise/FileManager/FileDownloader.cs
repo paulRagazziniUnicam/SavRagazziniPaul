@@ -1,13 +1,9 @@
 ﻿using ProgettoEnterprise;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure.Interception;
-using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.WebRequestMethods;
+using System.Net.Http;
+using System.Xml.Linq;
+
 
 namespace Enterprise
 {
@@ -15,19 +11,15 @@ namespace Enterprise
     class FileDownloader
     {
 
-        public FileDownloader()
-        {
-
-        }
         //scarica un file da https://filesamples.com/samples/document/txt/ specificando una delle tre possibilità
         public void downloadFile(String name)
         {
-
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
             string downloadPath = Path.Combine(desktopPath, (name + ".txt"));
 
             string url = "https://filesamples.com/samples/document/txt/";
+
 
             //istanzia una WebClient che gestice lo stack TCP in automatico 
 #pragma warning disable
@@ -48,6 +40,39 @@ namespace Enterprise
             }
         }
 
-        
+
+        //non funziona (perchè?)
+        public async void HttpDownload(string name)
+        {
+
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            string downloadPath = Path.Combine(desktopPath, (name + ".txt"));
+
+            string url = "https://filesamples.com/samples/document/txt/";
+
+            HttpClient client = new HttpClient();
+
+            try
+            {   //l'array di byte attende la risposta del Get di client, il cui response body verrà passato come array di byte
+                byte[] text = await client.GetByteArrayAsync(url + name + ".txt");
+                //crea un file in downloadPath e lo sovrascrive col contenuto del response body 
+                File.WriteAllBytes(downloadPath, text);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+
+            }
+
+
+        }
+      
+
+
+      
     }
+
+
 }
+

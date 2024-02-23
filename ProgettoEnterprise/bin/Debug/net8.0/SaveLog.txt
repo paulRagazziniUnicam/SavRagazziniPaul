@@ -6,3 +6,9 @@ Pattern trovato alla posizione: 1350
 Pattern trovato alla posizione: 1766
 Pattern trovato alla posizione: 1837
 _______________________________________________________________________________________
+NOME FILE: sample2
+NOME FILE: sample1
+STRINGA RICERCATA NEL FILE: ab
+Pattern trovato alla posizione: 533
+_______________________________________________________________________________________
+NOME FILE: sample1
