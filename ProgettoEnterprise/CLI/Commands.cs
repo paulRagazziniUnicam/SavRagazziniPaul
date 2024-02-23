@@ -1,5 +1,4 @@
 ﻿using Enterprise;
-using Microsoft.Extensions.DependencyInjection;
 using ProgettoEnterprise.CLI.Interfaces;
 using ProgettoEnterprise.FileManager.Interfaces;
 using ProgettoEnterprise.Persistency.Interfaces;
@@ -15,6 +14,7 @@ namespace ProgettoEnterprise
         private readonly Downloader downloaderService;
 
         private readonly Searcher searcherService;
+
 
         //costruttore
         public Commands(DbReadWrite persistency, Downloader downloader, Searcher searcher)
@@ -34,11 +34,13 @@ namespace ProgettoEnterprise
             
 
             this.searcherService.search(File_to_String.convert(filename), pattern);
+
+           
             
         }
 
         //comando che avvia la lettura del file di logging 
-        public void readData(int choice) {
+        public void readTable(int choice) {
            
             if (choice == 1) { persistencyService.readAllDocuments(); } 
             else { 
@@ -46,8 +48,16 @@ namespace ProgettoEnterprise
                     persistencyService.readAllResoults(); } }
         }
 
+        public void readAllData() {
+            Console.WriteLine("DOCUMENTI: ");
+            persistencyService.readAllDocuments();
+            Console.WriteLine("RISULTATI DI RICERCA: ");
+            persistencyService.readAllResoults();
+
+        }
+
         //elimina tutto dal database
-        public void deleatAll() {
+        public void deleteAll() {
             persistencyService.deleteAll();
         }
 

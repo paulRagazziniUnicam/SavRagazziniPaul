@@ -1,9 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using ProgettoEnterprise;
-
+﻿
 using ProgettoEnterprise.FileManager.Interfaces;
 using ProgettoEnterprise.Persistency.Interfaces;
-
+using Microsoft.Extensions.Logging;
 
 namespace ProgettoEnterprise
 {
@@ -11,7 +9,8 @@ namespace ProgettoEnterprise
     class FileSearcher : Searcher
     {
         private readonly DbReadWrite persistencyService;
-     
+
+
         public FileSearcher(DbReadWrite persistency)
         {   this.persistencyService = persistency;
         }
@@ -20,7 +19,7 @@ namespace ProgettoEnterprise
         //metodo che esegue il calcolo della funzione prefisso che sarà usata nel KMP 
         private int[] ComputePrefixFunction(string pattern)
         {
-
+            
             int m = pattern.Length;
             int[] prefixFunction = new int[m];
             prefixFunction[0] = 0;

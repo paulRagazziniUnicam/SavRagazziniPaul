@@ -3,21 +3,28 @@ using ProgettoEnterprise;
 using ProgettoEnterprise.CLI.Interfaces;
 using ProgettoEnterprise.Persistency.Interfaces;
 using ProgettoEnterprise.FileManager.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 
-var serviceProvider = new ServiceCollection()
+                IConfiguration config = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+               .Build();
+
+
+
+
+                 var serviceProvider = new ServiceCollection()
                 .AddTransient<DbReadWrite,DBmanager>()
                 .AddTransient<ICommands, Commands>()
                 .AddTransient<Downloader,FileDownloader>()
                 .AddTransient<Searcher,FileSearcher>()
+                .AddTransient<MyApp>()
                 .BuildServiceProvider();
             
 
-            var service = serviceProvider.GetService<ICommands>();
-            service.readData(2);
+                 var service = serviceProvider.GetService<MyApp>();
+                 service.execute();
 
 
-/*
-Commands commands = new Commands(new DBmanager(), new FileDownloader(new DBmanager()), new FileSearcher(new DBmanager()) );
-commands.readData(2);
-*/
+

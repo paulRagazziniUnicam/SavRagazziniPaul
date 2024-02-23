@@ -10,7 +10,11 @@ namespace ProgettoEnterprise.CLI.Interfaces
     {
         public void downloadAndSearch(string filename, string pattern);
 
-        public void readData(int choice);
+        public void readTable(int choice);
+
+        public void readAllData();
+
+        public void deleteAll();
 
     }
 }

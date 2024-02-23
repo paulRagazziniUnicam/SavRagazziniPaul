@@ -1,10 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿
 using ProgettoEnterprise.CLI.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ProgettoEnterprise
 {
@@ -12,9 +9,10 @@ namespace ProgettoEnterprise
     public class MyApp
     {
 
-
+        //variabile flag per l'uscita dall'esecuzione
         private int stopFlag = 0;
 
+        //Comandi iniettati che richiamano a loro volta tutti i servizi dell'app
         private readonly ICommands commandService;
 
         public MyApp(ICommands commands)
@@ -31,29 +29,40 @@ namespace ProgettoEnterprise
 
         public void execute()
         {
-            var serviceProvider = new ServiceCollection()
-               .AddTransient<ICommands, Commands>()
-               .BuildServiceProvider();
-               var service = serviceProvider.GetService<ICommands>();
-
+            
             while (this.stopFlag == 0)
             {
-                Console.WriteLine("Per leggere i dati salvati digitare 'R', per eseguire un download e fare la ricerca di un pattern digitare 'W'");
-                if (Console.ReadLine() == "R") { service.readData(1); }
-                else
+                Console.WriteLine("'R' per leggere i dati, 'W' per eseguire una ricerca, 'C' per cancellare le entry del DB");
+
+                string userInput = Console.ReadLine();
+                switch (userInput)
                 {
+                    case "R":
+                        commandService.readAllData();
+                        break;
 
-                    Console.Write("Scrivere il nome del file da scaricare:  ");
-                    Console.WriteLine("Le opzioni sono: 'sample1' , 'sample2' ,'sample3' ");
+                    case "W":
+                        Console.Write("Scrivere il nome del file da scaricare:  ");
+                        Console.WriteLine("Le opzioni sono: 'sample1' , 'sample2' ,'sample3' ");
 
-                    string filename = Console.ReadLine();
+                        string filename = Console.ReadLine();
 
-                    Console.WriteLine("inserire la stringa che si vuole cercare: ");
-                    string pattern = Console.ReadLine();
+                        Console.WriteLine("inserire la stringa che si vuole cercare: ");
+                        string pattern = Console.ReadLine();
 
-                   service.downloadAndSearch(filename, pattern);
-                   
+                        commandService.downloadAndSearch(filename, pattern);
+                        break;
+
+                    case "C":
+                        commandService.deleteAll();
+                        break;
+
+                    default: Console.WriteLine("INPUT ERRATO");
+                        
+                        break;
+
                 }
+
 
                 Console.WriteLine("Continuare l'esecuzione? (Y/N)");
                 string response = Console.ReadLine();
