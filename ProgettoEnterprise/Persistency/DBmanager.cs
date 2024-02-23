@@ -1,109 +1,83 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SQLite;
+﻿using ProgettoEnterprise.Persistency;
+using ProgettoEnterprise.Persistency.Interfaces;
 
 namespace ProgettoEnterprise
 {
     //classe adattatore per interazione con DB SQlite
-    class DBmanager
+    class DBmanager : DbReadWrite
     {
-        //path relativa per la connessione al DB, combina la path del db che si trova nella stessa directory dell'exe col nome del DB
-        private string connectionString = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MyDatabase.db");
+        //istanza del DbContext
+        private MyDBcontext context;
 
-
-
-
-        //metodo per l'insert nella table "Documenti"
-        public void insertDocumento(int id, string nome, string tipo)
+        //il costruttore istanzia il context
+        public DBmanager()
         {
-            SQLiteConnection connection = new SQLiteConnection("Data Source=" + connectionString + ";Version=3;");
-            connection.Open();
+            context = new MyDBcontext();
+            context.Database.EnsureCreated();
 
-            string insertSql = "INSERT INTO Documenti (ID, Nome, Tipo) VALUES (@ID, @Nome, @Tipo)";
-            SQLiteCommand insertCommand = new SQLiteCommand(insertSql, connection);
-
-
-            insertCommand.Parameters.AddWithValue("@ID", id);
-            insertCommand.Parameters.AddWithValue("@Nome", nome);
-            insertCommand.Parameters.AddWithValue("@Tipo", tipo);
-
-            insertCommand.ExecuteNonQuery();
-
-            connection.Close();
         }
 
-
-
-        //metodo per l'insert nella table "Risultati"
-        public void insertRisultato(int id_documento, string risultato) {
-            SQLiteConnection connection = new SQLiteConnection("Data Source=" + connectionString + ";Version=3;");
-            connection.Open();
-
-            string insertSql = "INSERT INTO Risultati (ID_Documento, Risultato) VALUES (@ID_Documento, @Risultato)";
-            SQLiteCommand insertCommand = new SQLiteCommand(insertSql, connection);
-
-            insertCommand.Parameters.AddWithValue("@ID_Documento", id_documento);
-            insertCommand.Parameters.AddWithValue("@Risultato", risultato);
-
-            insertCommand.ExecuteNonQuery();
-
-            connection.Close();
+        //insert documento nel DB 
+        public void addDocument(string nome)
+        {
+            context.Documenti.Add(new Documento { Nome = nome });
+            context.SaveChanges();
         }
 
-
-
-        //metodo per quary generica passando la table desiderata come parametro
-        public void searchQuary(string table)
+        //aggiunge un Risultato a seguito di una ricerca di una stringa in un file 
+        public void addResoult( string stringa_cercata, int posizione)
         {
-            SQLiteConnection connection = new SQLiteConnection("Data Source=" + connectionString + ";Version=3;");
-            connection.Open();
+            context.Risultati.Add(new Risultato { NomeFile = getLastDocumentName(), StringaCercata = stringa_cercata, NumeroMatch = posizione });
+            context.SaveChanges();
+        }
 
-            SQLiteDataReader sqlite_datareader;
-            SQLiteCommand sqlite_read;
-
-            sqlite_read = connection.CreateCommand();
-            sqlite_read.CommandText = "SELECT * FROM " + table;
-
-            sqlite_datareader = sqlite_read.ExecuteReader();
-            while (sqlite_datareader.Read())
+        //legge i Risultati di ricerca dal Db
+        public void readAllResoults()
+        {
+            var entities = context.Risultati.ToList();
+            foreach (var entity in entities)
             {
-                string myreader = sqlite_datareader.GetString(0);
-                Console.WriteLine(myreader);
+                Console.Write($"Nome File: {entity.NomeFile}" + ", ");
+                Console.Write($"Stringa Cercata: {entity.StringaCercata}" + ", ");
+                Console.WriteLine($"Posizione: {entity.NumeroMatch}");
             }
-            connection.Close();
+        }
 
+        //legge i Documenti dal Db
+        public void readAllDocuments()
+        {
+            var entities = context.Documenti.ToList();
+            foreach (var entity in entities)
+            {
+                Console.Write($"ID: {entity.ID}" + ", ");
+                Console.WriteLine($"Nome: {entity.Nome}");
+            }
+        }
+
+        //ritorna l'ultimo documento scaricato 
+        public string getLastDocumentName()
+        {
+            var entities = context.Documenti.ToList();
+            return entities.Last().Nome;
 
         }
 
+        //elimina tutti i dati dal database
+        public void deleteAll()
+        {
 
-
-
-
-            //testa la connessione col DB 
-            public void testConnection()
             
-            {
-                SQLiteConnection connection = new SQLiteConnection("Data Source=" + connectionString + ";Version=3;");
-                try {
-                    connection.Open();
+            var allRes = context.Risultati.ToList(); // Fetch all data from the table
+            context.Risultati.RemoveRange(allRes); // Remove all data
 
-                    if (connection.State == System.Data.ConnectionState.Open)
-                    {
-                        Console.WriteLine("Connection to SQLite database is successful!");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Connection to SQLite database failed!");
-                    }
-                    connection.Close();
-                } catch (Exception ex) { Console.WriteLine("something went wrong: " + ex); }
-            }
+            var allDocs = context.Documenti.ToList();
+            context.Documenti.RemoveRange(allDocs);
+            context.SaveChanges(); // Commit changes to the database
         }
 
-    }
+
+}
+}
 
 
 

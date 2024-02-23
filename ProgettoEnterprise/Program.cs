@@ -1,25 +1,23 @@
-﻿using Enterprise;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.DependencyInjection;
 using ProgettoEnterprise;
+using ProgettoEnterprise.CLI.Interfaces;
+using ProgettoEnterprise.Persistency.Interfaces;
+using ProgettoEnterprise.FileManager.Interfaces;
+
+
+var serviceProvider = new ServiceCollection()
+                .AddTransient<DbReadWrite,DBmanager>()
+                .AddTransient<ICommands, Commands>()
+                .AddTransient<Downloader,FileDownloader>()
+                .AddTransient<Searcher,FileSearcher>()
+                .BuildServiceProvider();
+            
+
+            var service = serviceProvider.GetService<ICommands>();
+            service.readData(1);
+
 
 /*
-MyApp app = new MyApp();
-app.execute();
+Commands commands = new Commands(new DBmanager(), new FileDownloader(new DBmanager()), new FileSearcher(new DBmanager()) );
+commands.readData(2);
 */
-
-var builder = new ConfigurationBuilder();
-builder.SetBasePath(Directory.GetCurrentDirectory())
-   .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-
-IConfiguration config = builder.Build();
-
-var batchSize = config["AutoNumberOptions:BatchSize"];
-
-Console.WriteLine($"Batch Size {batchSize}");
-
-
-
-
-
-
-

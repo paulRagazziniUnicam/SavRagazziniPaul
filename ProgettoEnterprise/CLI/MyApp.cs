@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ProgettoEnterprise.CLI.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,16 +11,35 @@ namespace ProgettoEnterprise
     //classe che chiama tutti gli handeler 
     public class MyApp
     {
+
+
         private int stopFlag = 0;
-        public MyApp() {
-            this.execute();
-          }
+
+        private readonly ICommands commandService;
+
+        public MyApp(ICommands commands)
+        {
+            commandService = commands;
+           
+        }
+
+        
+
 
         //loop di esecuzione dell'applicazione
-        public void execute() {
-            while (this.stopFlag == 0) {
+
+
+        public void execute()
+        {
+            var serviceProvider = new ServiceCollection()
+               .AddTransient<ICommands, Commands>()
+               .BuildServiceProvider();
+               var service = serviceProvider.GetService<ICommands>();
+
+            while (this.stopFlag == 0)
+            {
                 Console.WriteLine("Per leggere i dati salvati digitare 'R', per eseguire un download e fare la ricerca di un pattern digitare 'W'");
-                if (Console.ReadLine() == "R") { Commands.readData(); }
+                if (Console.ReadLine() == "R") { service.readData(1); }
                 else
                 {
 
@@ -30,16 +51,20 @@ namespace ProgettoEnterprise
                     Console.WriteLine("inserire la stringa che si vuole cercare: ");
                     string pattern = Console.ReadLine();
 
-                    Commands.downloadAndSearch(filename, pattern);
+                   service.downloadAndSearch(filename, pattern);
+                   
                 }
 
                 Console.WriteLine("Continuare l'esecuzione? (Y/N)");
                 string response = Console.ReadLine();
-                if (response == "N") {
-                    this.stopFlag=1;
+                if (response == "N")
+                {
+                    this.stopFlag = 1;
                 }
 
-            } 
+
+            }
         }
     }
 }
+
