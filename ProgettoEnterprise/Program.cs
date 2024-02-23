@@ -6,6 +6,8 @@ using ProgettoEnterprise.FileManager.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 
+                Console.ForegroundColor = ConsoleColor.Green;
+
                 IConfiguration config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetCurrentDirectory())
                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)

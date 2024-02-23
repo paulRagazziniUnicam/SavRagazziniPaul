@@ -2,7 +2,6 @@ Versione .NET 8.0
 
 Tecnologia di persistenza: 
 _SQLite database (bin/Debug/net8.0/MyDatabase.db)
-_File .txt di logging (bin/Debug/net8.0/SaveLog.txt)
 
 Librerie:
 _ System.Data.SQLite 
@@ -28,5 +27,3 @@ Compariranno dei warning in giallo, ignorarli
 I file che verranno analizzati saranno scaricati sul desktop 
 
 Tali file sono dei txt dummy, reperibili all'indirizzo https://filesamples.com/formats/txt
-
-Nel SaveLog ci sono già dei dati di test disponibili per la lettura
